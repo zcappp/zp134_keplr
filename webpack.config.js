@@ -5,7 +5,7 @@ module.exports = {
     mode: process.env.mode || "development",
     devtool: false,
     entry: {
-        "zp134": "./plugins/zp134_资源管理-S事件.js",
+        "zp134": "./plugins/zp134_资源管理.js",
     },
     output: {
         path: path.join(__dirname, "build/"),
