@@ -4,7 +4,7 @@ import css from "../css/zp134_资源管理.css"
 const DB = { res: ["j", "w", "l"], resource: ["i", "v", "f"] }
 const Labels = { res: "系统上传", resource: "用户上传", j: "图片", w: "视频", l: "文件", i: "图片", v: "视频", f: "文件" }
 const OPT = { sort: "按访问量排序", del: "已标记删除的资源", noview: "无访问的资源" }
-const noviews = { 本月: 1, 三个月: 3, 半年: 6, 一年: 12 }
+const noviews = { 三个月: 3, 半年: 6, 一年: 12, 两年: 24, 三年: 36 }
 let exc, rd, id, db, type, opt, sort, sorts, noview, data, count, list, Q, O, pop, editor, editorpop
 
 function render() {
@@ -185,8 +185,8 @@ const optSearch = {
     noview: e => {
         data = undefined
         if (e) noview = e.target.value
-        if (!noview) noview = "本月"
-        Q = { type, $and: [{ "status": { $exists: false } }] } // { "v.202105": { $exists: false } }
+        if (!noview) noview = "三个月"
+        Q = { type, status: { $exists: false }, _id: { $lt: Math.round((new Date(new Date() - 86400000 * 30 * 3)).getTime() / 1000).toString(16) + "0000000000000000" } } // { "v.202105": { $exists: false } }
         let m = new Date().getMonth() + 2
         let y = new Date().getFullYear()
         for (let i = 0; i < noviews[noview]; i++) {
@@ -195,9 +195,7 @@ const optSearch = {
                 y = y - 1
                 m = 12
             }
-            Q.$and.push({
-                ["v." + y + (m < 10 ? "0" + m : m)]: { $exists: false }
-            })
+            Q["v." + y + (m < 10 ? "0" + m : m)] = { $exists: false }
         }
         O = { limit: 30, skip: 0 }
         search()
@@ -287,9 +285,11 @@ function undel() {
 function dels() {
     const cmd = `
     confirm("危险!", "将会批量标记删除此类型下的所有数据? 共有${count}个!")
-    list.forEach('$resource.delete($x)')
+    $resource.search("zp134.dels" + type, Q, O)
+    $r.arr ? $r.arr.map('$x._id').forEach('$resource.delete($x)') : warn("出错了")
+    info("删除完成")
     `
-    exc(cmd, { list: list.map(a => a._id) }, () => selectDB(db))
+    exc(cmd, { type, Q, O: { limit: 0, select: "_id" } }, () => selectDB(db))
 }
 
 function calls(arr, fn, next) {
