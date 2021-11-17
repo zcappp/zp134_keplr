@@ -93,8 +93,8 @@ module.exports=` .zp134 {
 
 .zp134 th:nth-child(3),
 .zp134 td:nth-child(3) {
-    max-width: 73px;
-    min-width: 73px;
+    max-width: 85px;
+    min-width: 85px;
 }
 
 .zp134 th:nth-child(4),

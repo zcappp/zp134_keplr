@@ -242,11 +242,8 @@ function userName(auth) {
 function toSearch() {
     Q = $("#" + id + " .top input").value
     if (!Q || !Q.startsWith("{") || !Q.endsWith("}")) return exc('warn("搜索条件必须是合法的json")')
-    try {
-        Q = JSON.parse(Q)
-    } catch (e) {
-        return exc(`alert("搜索条件必须是合法的json", "${e.message}")`)
-    }
+    Q = exc(Q)
+    if (typeof Q !== "object") return exc(`alert("搜索条件必须是合法的json")`)
     Q.type = type
     O.skip = 0
     search()
