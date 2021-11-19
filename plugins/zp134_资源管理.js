@@ -1,8 +1,8 @@
 import React from "react"
 import css from "../css/zp134_资源管理.css"
 
-const DB = { res: ["j", "w", "l"], resource: ["i", "v", "f"] }
-const Labels = { res: "系统上传", resource: "用户上传", j: "图片", w: "视频", l: "文件", i: "图片", v: "视频", f: "文件" }
+const DB = { res: ["j", "w", "l", "p"], resource: ["i", "v", "f"] }
+const Labels = { res: "系统上传", resource: "用户上传", j: "图片", w: "视频", l: "文件", p: "文件夹", i: "图片", v: "视频", f: "文件" }
 const OPT = { sort: "按访问量排序", del: "已标记删除的资源", noview: "无访问的资源" }
 const noviews = { 三个月: 3, 半年: 6, 一年: 12, 两年: 24, 三年: 36 }
 let exc, rd, id, db, type, opt, sort, sorts, noview, data, count, list, Q, O, pop, editor, editorpop
