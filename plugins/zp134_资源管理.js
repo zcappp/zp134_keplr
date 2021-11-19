@@ -32,7 +32,7 @@ function render() {
         </table>
         <div className="detail">
             {!data && !!count && db === "resource" && opt === "noview" && <div><div style={{marginBottom: "9px"}}>总数：{count || ""}</div>
-                <div onClick={() => dels()} className="zbtn">删除</div>
+                <div onClick={dels} className="zbtn">删除</div>
             </div>}
             <div className={data ? "" : "zhide"}><div className="jsoneditor"/></div>
             {data && <div>
@@ -40,14 +40,14 @@ function render() {
                 {db === "resource" && <button onClick={() => popup("x")} className={"zbtn" + (data.x && Object.keys(data.x).length ? " zprimary" : "")}>x</button>}
                 {db === "resource" && <button onClick={() => popup("y")} className={"zbtn" + (data.y && Object.keys(data.y).length ? " zprimary" : "")}>y</button>}
                 <div className="zright">
-                    {db === "resource" && opt !== "del" && <button onClick={() => del()} className="zbtn">删除</button>}
-                    {opt === "del" && <button onClick={() => undel()} className="zbtn">恢复</button>}
+                    {db === "resource" && opt !== "del" && <button onClick={del} className="zbtn">删除</button>}
+                    {opt === "del" && <button onClick={undel} className="zbtn">恢复</button>}
                 </div>
                 {!!pop && <div className="zmodals">
                     <div className="zmask" onClick={() => {pop = undefined; rd()}}/>
                     <div className="zmodal">
                         <div className="zmodal_bd editorpop"/>
-                        {pop === "y" && <div className="zmodal_ft"><button onClick={() => saveY()} className="zbtn" style={{marginRight: 0}}>保存</button></div>}
+                        {pop === "y" && <div className="zmodal_ft"><button onClick={saveY} className="zbtn" style={{marginRight: 0}}>保存</button></div>}
                     </div>
                 </div>}
             </div>}
@@ -57,8 +57,8 @@ function render() {
 
 function rOPT() {
     if (!opt) return <React.Fragment>
-        <input type="text" placeholder='{ "y.type": "2021迎春活动" }' className="zinput"/>
-        <button onClick={() => toSearch()} className="zbtn">搜索</button>
+        <input onBlur={toSearch} type="text" placeholder='{ "y.type": "2021迎春活动" }' className="zinput"/>
+        <button onClick={toSearch} className="zbtn">搜索</button>
     </React.Fragment>
     if (opt === "sort") return <React.Fragment>
         按 <select value={sort} onChange={optSearch.sort} className="zinput">
@@ -197,6 +197,7 @@ const optSearch = {
             }
             Q["v." + y + (m < 10 ? "0" + m : m)] = { $exists: false }
         }
+        Q._id = { "$lt": exc('OID(d)', { d: new Date(y, m, 1) }) }
         O = { limit: 30, skip: 0 }
         search()
     },
