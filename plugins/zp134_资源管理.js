@@ -63,7 +63,7 @@ function rOPT() {
     if (opt === "sort") return <React.Fragment>
         按 <select value={sort} onChange={optSearch.sort} className="zinput">
             {sorts.map(a => <option value={a} key={a}>{a}</option>)}
-        </select> 天前的访问量排序
+        </select> 天前的访问量排序 ({new Date(new Date() - 86400000 * sort).format("yyyy/MM/dd")})
     </React.Fragment>
     if (opt === "noview") return <React.Fragment>
         <select value={noview} onChange={optSearch.noview} className="zinput">
