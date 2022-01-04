@@ -3,7 +3,7 @@ import css from "../css/zp134_资源管理.css"
 
 const DB = { res: ["j", "w", "l", "p"], resource: ["i", "v", "f"] }
 const Labels = { res: "系统上传", resource: "用户上传", j: "图片", w: "视频", l: "文件", p: "文件夹", i: "图片", v: "视频", f: "文件" }
-const OPT = { sort: "按访问量排序", del: "已标记删除的资源", noview: "无访问的资源" }
+const OPT = { sort: "按下载量排序", del: "已标记删除的资源", noview: "无访问的资源" }
 const noviews = { 三个月: 3, 半年: 6, 一年: 12, 两年: 24, 三年: 36 }
 let exc, rd, id, db, type, opt, sort, sorts, noview, data, count, list, Q, O, pop, editor, editorpop
 
@@ -57,13 +57,13 @@ function render() {
 
 function rOPT() {
     if (!opt) return <React.Fragment>
-        <input onBlur={toSearch} type="text" placeholder='{ "y.type": "2021迎春活动" }' className="zinput"/>
+        <input onBlur={toSearch} type="text" placeholder='{ "x.类型": "网盘" }' className="zinput"/>
         <button onClick={toSearch} className="zbtn">搜索</button>
     </React.Fragment>
     if (opt === "sort") return <React.Fragment>
         按 <select value={sort} onChange={optSearch.sort} className="zinput">
             {sorts.map(a => <option value={a} key={a}>{a}</option>)}
-        </select> 天前的访问量排序 ({new Date(new Date() - 86400000 * sort).format("yyyy/MM/dd")})
+        </select> 天前的下载量排序 ({new Date(new Date() - 86400000 * sort).format("yyyy/MM/dd")})
     </React.Fragment>
     if (opt === "noview") return <React.Fragment>
         <select value={noview} onChange={optSearch.noview} className="zinput">
@@ -242,7 +242,7 @@ function userName(auth) {
 }
 
 function toSearch() {
-    Q = $("#" + id + " .top input").value
+    Q = $("#" + id + " .type input").value
     if (!Q || !Q.startsWith("{") || !Q.endsWith("}")) return exc('warn("搜索条件必须是合法的json")')
     Q = exc(Q)
     if (typeof Q !== "object") return exc(`alert("搜索条件必须是合法的json")`)
