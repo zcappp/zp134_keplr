@@ -39,7 +39,7 @@ function render() {
                 <div style={{margin: "7px 0"}}><strong>_id: </strong>{data._id}</div>
                 {db === "resource" && <button onClick={() => popup("x")} className={"zbtn" + (data.x && Object.keys(data.x).length ? " zprimary" : "")}>x</button>}
                 {db === "resource" && <button onClick={() => popup("y")} className={"zbtn" + (data.y && Object.keys(data.y).length ? " zprimary" : "")}>y</button>}
-                <div className="zright">
+                <div className="zfright">
                     {db === "resource" && opt !== "del" && <button onClick={del} className="zbtn">删除</button>}
                     {opt === "del" && <button onClick={undel} className="zbtn">恢复</button>}
                 </div>
