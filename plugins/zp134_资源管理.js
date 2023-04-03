@@ -72,7 +72,7 @@ function rOPT() {
     </React.Fragment>
 }
 
-function onInit(ref) {
+function init(ref) {
     exc = ref.exc
     rd = ref.render
     id = ref.id
@@ -305,6 +305,6 @@ function calls(arr, fn, next) {
 $plugin({
     id: "zp134",
     render,
-    onInit,
+    init,
     css
 })
