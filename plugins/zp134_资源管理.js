@@ -230,7 +230,7 @@ function getUsers(R) {
         if (a && !arr.includes(a) && !exc('$c.user[auth]', { auth: a })) arr.push(a)
     })
     if (!arr.length) return
-    R.model == "res" ? exc(`$api.serviceX("用户列表", "111111111111111111100001", { arr })`, { arr }, () => rd()) : exc(`$user.search("zp134.user", Q, O)`, { Q: { _id: { $in: arr } }, O: { limit: 0, select: "x.姓名 x.name wx.nickname" } }, () => rd())
+    R.model == "res" ? exc(`$srv.用户列表({ arr }, "a0")`, { arr }, () => rd()) : exc(`$user.search("zp134.user", Q, O)`, { Q: { _id: { $in: arr } }, O: { limit: 0, select: "x.姓名 x.name wx.nickname" } }, () => rd())
 }
 
 function userName(auth) {
