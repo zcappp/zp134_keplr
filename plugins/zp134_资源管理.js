@@ -198,7 +198,7 @@ const optSearch = {
             }
             Q["v." + y + (m < 10 ? "0" + m : m)] = { $exists: false }
         }
-        Q._id = { "$lt": exc('OID(d)', { d: new Date(y, m, 1) }) }
+        Q._id = { "$lt": exc('_id(d)', { d: new Date(y, m, 1) }) }
         O = { limit: 30, skip: 0 }
         search()
     },
