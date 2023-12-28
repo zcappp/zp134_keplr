@@ -1,9 +1,11 @@
 import { StargateClient, SigningStargateClient } from "@cosmjs/stargate"
 
+const RpcUrl = "https://rpc.sentry-01.theta-testnet.polypore.xyz"
+
 async function init(ref) {
-    ref.client = await StargateClient.connect("https://rpc.sentry-01.theta-testnet.polypore.xyz")
-    const chainId = await ref.client.getChainId()
-    log("chainID", chainId)
+    ref.client = await StargateClient.connect(RpcUrl)
+    // const chainId = await ref.client.getChainId()
+    // log("chainID", chainId)
     window.connectKeplr = async () => {
         if (!window.keplr) return alert("You need to install Keplr")
         try {
@@ -12,12 +14,31 @@ async function init(ref) {
         } catch (err) {
             warn(err.message || err)
         }
-        const offlineSigner = window.getOfflineSigner("theta-testnet-001")
+        const offlineSigner = window.keplr.getOfflineSigner("theta-testnet-001")
         const signingClient = await SigningStargateClient.connectWithSigner("https://rpc.sentry-01.theta-testnet.polypore.xyz", offlineSigner)
         const account = (await offlineSigner.getAccounts())[0]
         return { address: account.address, balance: (await signingClient.getBalance(account.address, "uatom")).amount }
     }
 
+    window.sendKeplr = async (myAddress, toAmount, toAddress, denom) => {
+        const offlineSigner = window.keplr.getOfflineSigner("theta-testnet-001")
+        const signingClient = await SigningStargateClient.connectWithSigner(RpcUrl, offlineSigner)
+        const account = (await offlineSigner.getAccounts())[0]
+        const sendResult = await signingClient.sendTokens(
+            account.address,
+            toAddress,
+            [{
+                denom: denom,
+                amount: toAmount,
+            }], {
+                amount: [{ denom: "uatom", amount: "500" }],
+                gas: "200000",
+            }
+        )
+        const myBalance = await signingClient.getBalance(account.address, denom)
+        log(sendResult, myBalance)
+        return myBalance.amount
+    }
 }
 
 const TestnetChainInfo = {
@@ -86,16 +107,6 @@ const TestnetChainInfo = {
 
 $plugin({
     id: "zp134",
-    props: [{
-        prop: "cfg",
-        type: "text",
-        label: "数据配置",
-        ph: "(用小括号)"
-    }, {
-        prop: "opt",
-        type: "text",
-        label: "选项",
-        ph: "(用小括号)"
-    }],
+    props: [],
     init
 })
