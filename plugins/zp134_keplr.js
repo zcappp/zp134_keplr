@@ -23,21 +23,12 @@ async function init(ref) {
     window.sendKeplr = async (myAddress, toAmount, toAddress, denom) => {
         const offlineSigner = window.keplr.getOfflineSigner("theta-testnet-001")
         const signingClient = await SigningStargateClient.connectWithSigner(RpcUrl, offlineSigner)
-        const account = (await offlineSigner.getAccounts())[0]
-        const sendResult = await signingClient.sendTokens(
-            account.address,
-            toAddress,
-            [{
-                denom: denom,
-                amount: toAmount,
-            }], {
-                amount: [{ denom: "uatom", amount: "500" }],
-                gas: "200000",
-            }
-        )
-        const myBalance = await signingClient.getBalance(account.address, denom)
-        log(sendResult, myBalance)
-        return myBalance.amount
+        const accounts = await offlineSigner.getAccounts()
+        const account = accounts[0]
+        const sendResult = await signingClient.sendTokens(account.address, toAddress, [{ denom: denom, amount: toAmount, }], { amount: [{ denom: "uatom", amount: "500" }], gas: "200000", })
+        // const myBalance = await signingClient.getBalance(account.address, denom)
+        // log(sendResult, myBalance)
+        return sendResult
     }
 }
 
