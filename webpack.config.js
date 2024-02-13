@@ -5,7 +5,7 @@ module.exports = {
     mode: process.env.mode || "development",
     devtool: false,
     entry: {
-        "zp134": "./plugins/zp134_keplr.js",
+        "zp134": "./src/zp134_keplr.js",
     },
     output: {
         path: path.join(__dirname, "build/"),
